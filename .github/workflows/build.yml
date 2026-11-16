@@ -1,0 +1,63 @@
+name: Build APK
+
+# 每次推送到 main、提 PR、打 tag，或手动触发时，在 GitHub 的机器上编译一次 release APK。
+# 目的有二：一是保证仓库里的代码在干净环境下确实能编过（不依赖某个人的本机 SDK），
+# 二是给出一个可以直接下载安装的 APK。
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write        # 打 tag 时创建 Release 需要
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 取代码
+        uses: actions/checkout@v4
+
+      - name: 安装 JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: 安装 Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          # 默认值是 "tools platform-tools"，但 runner 镜像里已经没有 `tools` 这个包了，
+          # sdkmanager 会以 "Failed to find package 'tools'" 直接失败。只留 platform-tools，
+          # 其余组件下一步显式安装。
+          packages: platform-tools
+
+      - name: 补齐编译所需的 SDK 组件
+        run: |
+          sdkmanager --install "platforms;android-34" "build-tools;34.0.0" "platform-tools"
+
+      - name: 编译 release APK
+        working-directory: launcher
+        run: |
+          chmod +x gradlew
+          # 没有 local.properties 也没关系：AGP 会读 ANDROID_HOME，由上一步的 setup-android 提供。
+          # 中国大陆访问 Maven 慢的话，可以在仓库变量里把 GRADLE_OPTS 指向 ./init-aliyun.gradle。
+          ./gradlew assembleRelease --no-daemon --stacktrace
+
+      - name: 上传 APK（每次构建都能在 Actions 页面下载）
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-apk
+          path: launcher/app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
+
+      - name: 打 tag 时附到 Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: launcher/app/build/outputs/apk/release/*.apk
+          generate_release_notes: true

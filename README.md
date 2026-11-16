@@ -76,6 +76,12 @@ adb shell cmd package set-home-activity --user 0 com.gathin.tvhome/.MainActivity
 
 装好后建议在系统设置里允许它自启动 / 后台运行，否则部分机型回桌面时会重新启动一次。
 
+### 用 GitHub Actions 构建
+
+仓库自带 `.github/workflows/build.yml`：推送到 `main`、提 PR、打 `v*` 标签或手动触发时，会在 GitHub 的机器上编译一次 release APK，产物在 Actions 页面对应运行的 **Artifacts → app-release-apk** 里下载；打标签时还会自动附到 Release。
+
+> 注意签名：`release` 构建用的是 **debug 签名**（见 `app/build.gradle` 的 `signingConfig signingConfigs.debug`），而 CI 每次运行都会生成一个全新的 debug keystore。因此 **CI 编出来的 APK 和本机编的签名不同**，直接 `adb install -r` 覆盖会报 `INSTALL_FAILED_UPDATE_INCOMPATIBLE`。要覆盖就先 `adb uninstall com.gathin.tvhome`，或者自己固定一个 keystore 通过 secrets 注入。
+
 ## 四、目录
 
 ```
