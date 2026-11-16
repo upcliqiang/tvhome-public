@@ -1,0 +1,20 @@
+// 通过阿里云镜像解析 Google Maven / Maven Central 依赖（国内直连不可用）
+settingsEvaluated { s ->
+    def mirrors = [
+        'https://maven.aliyun.com/repository/google',
+        'https://maven.aliyun.com/repository/central',
+        'https://maven.aliyun.com/repository/gradle-plugin',
+        'https://maven.aliyun.com/repository/public',
+    ]
+    s.pluginManagement.repositories {
+        mirrors.each { m -> maven { url m; allowInsecureProtocol = false } }
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+    s.dependencyResolutionManagement.repositories {
+        mirrors.each { m -> maven { url m } }
+        google()
+        mavenCentral()
+    }
+}

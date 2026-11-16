@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The screensaver's quote style. Local, static strings: the screensaver never touches the network. -->
+<resources>
+    <string-array name="screensaver_quotes">
+        <item>The quieter you become, the more you hear.</item>
+        <item>Night is the other half of the day.</item>
+        <item>Somewhere, the sun is always rising.</item>
+        <item>Slow down; the evening is in no hurry.</item>
+        <item>Every lit window holds a small world.</item>
+        <item>The moon keeps no appointments.</item>
+        <item>Rest is part of the work.</item>
+        <item>A little darkness is what makes the stars.</item>
+        <item>Let the day end without a verdict.</item>
+        <item>The room grows quiet, and so do I.</item>
+        <item>Time is the one thing we spend without counting.</item>
+        <item>Tomorrow will arrive on its own.</item>
+    </string-array>
+</resources>

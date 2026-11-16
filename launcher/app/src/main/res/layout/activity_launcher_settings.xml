@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Settings are glass cards on a near-black page, one row per setting: label on the left, its control on the
+     right. Choices sit in a segmented trough; rows that open something show the current value and a chevron. -->
+<com.gathin.tvhome.EdgeScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/settings_page_bg"
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:paddingBottom="44dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="64dp"
+        android:paddingEnd="64dp"
+        android:paddingTop="40dp"
+        android:paddingBottom="48dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/launcher_settings"
+                android:textColor="#FFFFFFFF"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/reorderChoice"
+                style="@style/TopButton"
+                android:layout_width="wrap_content"
+                android:drawableStart="@drawable/ic_swap_vert"
+                android:text="@string/reorder"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <!-- Layout and looks. -->
+        <LinearLayout
+            style="@style/SettingsCard"
+            android:layout_marginTop="24dp">
+
+            <LinearLayout style="@style/SettingsRowChoices">
+                <TextView
+                    style="@style/SettingsRowLabel"
+                    android:text="@string/columns_label" />
+
+                <LinearLayout style="@style/SettingsSegmentGroup">
+                    <TextView android:id="@+id/columns4" style="@style/SettingsColumnChoice" android:text="4" />
+                    <TextView android:id="@+id/columns5" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" android:text="5" />
+                    <TextView android:id="@+id/columns6" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" android:text="6" />
+                    <TextView android:id="@+id/columns7" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" android:text="7" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/SettingsRowChoices">
+                <TextView
+                    style="@style/SettingsRowLabel"
+                    android:text="@string/rows_below_dock_label" />
+
+                <LinearLayout style="@style/SettingsSegmentGroup">
+                    <TextView android:id="@+id/rows0" style="@style/SettingsColumnChoice" android:text="0" />
+                    <TextView android:id="@+id/rows1" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" android:text="1" />
+                    <TextView android:id="@+id/rows2" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" android:text="2" />
+                    <TextView android:id="@+id/rows3" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" android:text="3" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/SettingsRowChoices">
+                <TextView
+                    style="@style/SettingsRowLabel"
+                    android:text="@string/dock_opacity_label" />
+
+                <LinearLayout style="@style/SettingsSegmentGroup">
+                    <TextView android:id="@+id/dock100" style="@style/SettingsColumnChoice" android:text="100%" />
+                    <TextView android:id="@+id/dock70" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" android:text="70%" />
+                    <TextView android:id="@+id/dock50" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" android:text="50%" />
+                    <TextView android:id="@+id/dock30" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" android:text="30%" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/SettingsRowChoices">
+                <TextView
+                    style="@style/SettingsRowLabel"
+                    android:text="@string/dream_name" />
+
+                <LinearLayout style="@style/SettingsSegmentGroup">
+                    <TextView android:id="@+id/clockSystem" style="@style/SettingsColumnChoice" android:text="@string/clock_format_system"
+                        android:nextFocusDown="@id/lunarOn" />
+                    <TextView android:id="@+id/clock12" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" android:text="@string/clock_format_12"
+                        android:nextFocusDown="@id/lunarOn" />
+                    <TextView android:id="@+id/clock24" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" android:text="@string/clock_format_24"
+                        android:nextFocusDown="@id/lunarOn" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- The lunar date shows under the clock on Home, so it sits right below the clock format here. -->
+            <LinearLayout style="@style/SettingsRowChoices">
+                <TextView
+                    style="@style/SettingsRowLabel"
+                    android:text="@string/lunar_label" />
+
+                <LinearLayout style="@style/SettingsSegmentGroup">
+                    <TextView android:id="@+id/lunarOn" style="@style/SettingsColumnChoice" android:text="@string/on" />
+                    <TextView android:id="@+id/lunarOff" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" android:text="@string/off" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Wallpaper: the theme's pictures as segments, then how often they change. The chips are built in
+                 code because a theme brings its own set; they scroll sideways once a collection outgrows the row. -->
+            <LinearLayout style="@style/SettingsRowChoices">
+                <TextView
+                    style="@style/SettingsRowLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="0"
+                    android:text="@string/wallpaper_label" />
+
+                <HorizontalScrollView
+                    android:id="@+id/wallpaperScroll"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/wallpaperChips"
+                        style="@style/SettingsSegmentGroup"
+                        android:layout_gravity="end" />
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <LinearLayout style="@style/SettingsRowChoices">
+                <TextView
+                    style="@style/SettingsRowLabel"
+                    android:text="@string/wallpaper_rotation_label" />
+
+                <LinearLayout style="@style/SettingsSegmentGroup">
+                    <TextView android:id="@+id/rotation0" style="@style/SettingsColumnChoice" android:text="@string/off" />
+                    <TextView android:id="@+id/rotation15" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" android:text="@string/rotation_15" />
+                    <TextView android:id="@+id/rotation60" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" android:text="@string/rotation_60" />
+                    <TextView android:id="@+id/rotation240" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" android:text="@string/rotation_240" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Screensaver: when it comes on, and what it shows, as one setting with two segments. It sits
+                 under the wallpaper because the two describe the same thing: what fills the screen. -->
+            <LinearLayout style="@style/SettingsRowChoices">
+                <TextView
+                    style="@style/SettingsRowLabel"
+                    android:text="@string/screensaver_label" />
+
+                <LinearLayout style="@style/SettingsSegmentGroup">
+                    <TextView android:id="@+id/saver0" style="@style/SettingsColumnChoice" android:text="@string/off" />
+                    <TextView android:id="@+id/saver1" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" />
+                    <TextView android:id="@+id/saver5" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" />
+                    <TextView android:id="@+id/saver10" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" />
+                    <TextView android:id="@+id/saver30" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/SettingsRowChoices">
+                <TextView
+                    style="@style/SettingsRowLabel"
+                    android:text="@string/screensaver_style_label" />
+
+                <LinearLayout style="@style/SettingsSegmentGroup">
+                    <TextView android:id="@+id/style0" style="@style/SettingsColumnChoice" />
+                    <TextView android:id="@+id/style1" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" />
+                    <TextView android:id="@+id/style2" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" />
+                    <TextView android:id="@+id/style3" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" />
+                    <TextView android:id="@+id/style4" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" />
+                    <TextView android:id="@+id/style5" style="@style/SettingsColumnChoice" android:layout_marginStart="4dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/uploadChoice" style="@style/SettingsRow">
+                <TextView
+                    style="@style/SettingsRowLabel"
+                    android:text="@string/upload_label" />
+
+                <TextView android:id="@+id/rowValueUpload" style="@style/SettingsRowValue" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/SettingsHint"
+                android:text="@string/screensaver_hint" />
+        </LinearLayout>
+
+        <!-- Motion. -->
+        <LinearLayout
+            style="@style/SettingsCard"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout android:id="@+id/animationsChoice" style="@style/SettingsRow">
+                <TextView
+                    style="@style/SettingsRowLabel"
+                    android:text="@string/animations" />
+
+                <TextView android:id="@+id/rowValueAnimations" style="@style/SettingsRowValue" />
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/advancedChoice" style="@style/SettingsRow">
+                <TextView
+                    style="@style/SettingsRowLabel"
+                    android:text="@string/advanced_effects" />
+
+                <TextView android:id="@+id/rowValueAdvanced" style="@style/SettingsRowValue" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/SettingsHint"
+                android:text="@string/advanced_effects_warning" />
+        </LinearLayout>
+
+        <!-- System: start-up, whose layout wins, and the way out to the TV's own settings. -->
+        <LinearLayout
+            style="@style/SettingsCard"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:id="@+id/openOnStartChoice"
+                style="@style/SettingsRow"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/SettingsRowLabel"
+                    android:text="@string/open_on_start_label" />
+
+                <TextView android:id="@+id/rowValueOpenOnStart" style="@style/SettingsRowValue" />
+
+                <ImageView style="@style/SettingsRowChevron" />
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/followThemeChoice" style="@style/SettingsRow">
+                <TextView
+                    style="@style/SettingsRowLabel"
+                    android:text="@string/follow_theme" />
+
+                <ImageView
+                    android:id="@+id/rowCheck"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginStart="12dp"
+                    android:duplicateParentState="true"
+                    android:src="@drawable/ic_check"
+                    android:tint="@color/settings_value_text"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/SettingsHint"
+                android:text="@string/follow_theme_hint" />
+
+            <LinearLayout android:id="@+id/defaultHomeChoice" style="@style/SettingsRow">
+                <TextView
+                    style="@style/SettingsRowLabel"
+                    android:text="@string/home_settings" />
+
+                <ImageView style="@style/SettingsRowChevron" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/SettingsHint"
+                android:text="@string/home_settings_help" />
+
+            <LinearLayout android:id="@+id/tvSettingsChoice" style="@style/SettingsRow">
+                <TextView
+                    style="@style/SettingsRowLabel"
+                    android:text="@string/tv_settings" />
+
+                <ImageView style="@style/SettingsRowChevron" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</com.gathin.tvhome.EdgeScrollView>

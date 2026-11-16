@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One choice inside a dialog's list. These are real focusable rows built from the settings page's row, so the
+     choice under the remote turns into the same white pill as everything else instead of the framework list's
+     grey band (which its list selector would not even draw on this platform). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="52dp"
+    android:layout_marginTop="2dp"
+    android:background="@drawable/settings_row_bg"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
+
+    <TextView
+        android:id="@+id/choiceLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:duplicateParentState="true"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@drawable/pill_text"
+        android:textSize="17sp" />
+
+    <ImageView
+        android:id="@+id/choiceCheck"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="12dp"
+        android:duplicateParentState="true"
+        android:src="@drawable/ic_check"
+        android:tint="@color/settings_value_text"
+        android:visibility="gone" />
+</LinearLayout>

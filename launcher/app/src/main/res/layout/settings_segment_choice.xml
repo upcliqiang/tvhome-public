@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One chip of a segmented control that is built at runtime, such as the wallpaper choices a theme brings:
+     a theme can ship any number of pictures, so the row cannot be written out in the page layout.
+     nextFocusUp is pinned to the lunar row above: the framework's geometric focus search is unreliable
+     coming up from a chip at the row's right end, so the move is spelled out instead of searched. -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/SettingsChip"
+    android:nextFocusUp="@id/lunarOn" />

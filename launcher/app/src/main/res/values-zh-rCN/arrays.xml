@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 屏保「每日一句」用到的文案。全部是公有领域的古诗词与短句，不联网。 -->
+<resources>
+    <string-array name="screensaver_quotes">
+        <item>明月松间照，清泉石上流。</item>
+        <item>行到水穷处，坐看云起时。</item>
+        <item>采菊东篱下，悠然见南山。</item>
+        <item>晚来天欲雪，能饮一杯无。</item>
+        <item>海上生明月，天涯共此时。</item>
+        <item>落霞与孤鹜齐飞，秋水共长天一色。</item>
+        <item>随风潜入夜，润物细无声。</item>
+        <item>一蓑烟雨任平生。</item>
+        <item>山中何事，松花酿酒，春水煎茶。</item>
+        <item>疏影横斜水清浅，暗香浮动月黄昏。</item>
+        <item>醉后不知天在水，满船清梦压星河。</item>
+        <item>人间有味是清欢。</item>
+    </string-array>
+</resources>

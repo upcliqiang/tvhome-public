@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hebrew input rows: status on the left, right-aligned name and icon on the right. Same shape as
+     item_source: 48dp, white pill on focus, dark label. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:layout_marginTop="2dp"
+    android:layoutDirection="ltr"
+    android:background="@drawable/settings_row_bg"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp">
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:duplicateParentState="true"
+        android:fontFamily="@string/font_body"
+        android:letterSpacing="0.04"
+        android:textColor="@drawable/pill_text_dim"
+        android:textDirection="locale"
+        android:textSize="11sp" />
+
+    <View
+        android:id="@+id/dot"
+        android:layout_width="7dp"
+        android:layout_height="7dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/status_dot" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        android:duplicateParentState="true"
+        android:fontFamily="@string/font_medium"
+        android:gravity="right"
+        android:singleLine="true"
+        android:textColor="@drawable/pill_text"
+        android:textDirection="locale"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:contentDescription="@null"
+        android:duplicateParentState="true"
+        android:tint="@drawable/pill_text" />
+</LinearLayout>

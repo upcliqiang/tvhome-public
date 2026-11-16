@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A row's right-hand value (and its chevron): dim white at rest, near-black on the focused white row so it
+     keeps its "less important than the label" weight. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true" android:color="#99000000" />
+    <item android:color="#B3FFFFFF" />
+</selector>

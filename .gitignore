@@ -1,0 +1,17 @@
+# 构建产物
+build/
+.gradle/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+captures/
+out/
+
+# 本机配置（含本机 SDK 绝对路径，绝不能提交）
+local.properties
+.idea/
+*.iml
+.DS_Store
+Thumbs.db

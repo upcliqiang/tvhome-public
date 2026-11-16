@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The quote style's content: one line of text, centred, changed every few minutes by ScreensaverScene. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dreamContent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dreamQuote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#D9FFFFFF"
+        android:textSize="40sp"
+        android:fontFamily="@string/font_light"
+        android:letterSpacing="0.02"
+        android:lineSpacingMultiplier="1.35" />
+</LinearLayout>

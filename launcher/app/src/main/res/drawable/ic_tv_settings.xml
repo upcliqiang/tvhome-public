@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The TV's own settings: a screen outline carrying two sliders, next to the launcher's gear. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="22dp" android:height="22dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+    <!-- Bezel: the outer screen with the panel cut out of it. -->
+    <path android:fillColor="#FFFFFFFF" android:fillType="evenOdd"
+        android:pathData="M2.6,3.4H21.4V17H2.6Z M4.4,5.2H19.6V15.2H4.4Z" />
+    <!-- Stand. -->
+    <path android:fillColor="#FFFFFFFF"
+        android:pathData="M10.9,17H13.1V19H10.9Z M7.4,19H16.6V20.6H7.4Z" />
+    <!-- Two sliders: a track each, with its handle. -->
+    <path android:fillColor="#FFFFFFFF"
+        android:pathData="M6.2,8H17.8V9.2H6.2Z M13.8,7.1H15.9V10.1H13.8Z M6.2,11.4H17.8V12.6H6.2Z M8.1,10.5H10.2V13.5H8.1Z" />
+</vector>

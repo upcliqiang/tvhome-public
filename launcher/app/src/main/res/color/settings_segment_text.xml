@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A choice's text: dark on the solid white pill focus, plain white while it is the current value, dim
+     otherwise. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true" android:color="#FF101214" />
+    <item android:state_selected="true" android:color="#FFFFFFFF" />
+    <item android:color="#A6FFFFFF" />
+</selector>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The "opens something" arrow at the end of a settings row. A stroked chevron rather than a ">" glyph,
+     so it does not depend on the font having one. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="14dp" android:height="14dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+    <path android:strokeColor="#FFFFFFFF" android:strokeWidth="2.6" android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M9.5,5 L16.5,12 L9.5,19" />
+</vector>

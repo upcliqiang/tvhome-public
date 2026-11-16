@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The screensaver's shell (ClockDream, ClockActivity): a black screen, the ambient backdrop, and one content
+     layout ScreensaverScene inflates into dreamHost for the chosen style. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF000000">
+
+    <!-- The glow is its background; a wallpaper style puts the picture in it, cropped like Home's. -->
+    <ImageView
+        android:id="@+id/dreamAmbient"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:importantForAccessibility="no" />
+
+    <FrameLayout
+        android:id="@+id/dreamHost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</FrameLayout>

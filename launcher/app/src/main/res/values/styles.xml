@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.TvHome" parent="android:Theme.Material.NoActionBar.Fullscreen">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:colorBackground">@android:color/black</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
+    <!-- Frosted pill, tvOS style. -->
+    <style name="TopButtonBase">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">42dp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/pill_bg</item>
+        <item name="android:textColor">@drawable/pill_text</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily">@string/font_medium</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:drawablePadding">9dp</item>
+        <item name="android:drawableTint">@drawable/pill_text</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+    <style name="TopButton" parent="TopButtonBase" />
+
+    <!-- Icon-only pill: a 42dp circle (pill_bg's 21dp corners) with the 22dp icon centred by even padding. Give it a
+         contentDescription, since there is no text. -->
+    <style name="TopButtonIcon" parent="TopButtonBase">
+        <item name="android:layout_width">42dp</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:drawablePadding">0dp</item>
+    </style>
+
+    <!-- Launcher settings: glass cards of rows on a near-black page, the same material as the control panel.
+         A row is invisible until it takes focus, when it becomes the solid white pill of the top bar. -->
+    <style name="SettingsCard">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/control_panel_bg</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+    </style>
+
+    <!-- A row that opens something or toggles a value: label left, value and chevron right. -->
+    <style name="SettingsRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">18dp</item>
+        <item name="android:paddingEnd">18dp</item>
+        <item name="android:background">@drawable/settings_row_bg</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <!-- A row that holds a segmented control: the choices take the focus, the row itself does not. -->
+    <style name="SettingsRowChoices">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">18dp</item>
+        <item name="android:paddingEnd">14dp</item>
+    </style>
+
+    <style name="SettingsRowLabel">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:duplicateParentState">true</item>
+        <item name="android:textColor">@drawable/pill_text</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="SettingsRowValue">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:maxWidth">400dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:duplicateParentState">true</item>
+        <item name="android:textColor">@color/settings_value_text</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="SettingsRowChevron">
+        <item name="android:layout_width">14dp</item>
+        <item name="android:layout_height">14dp</item>
+        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:duplicateParentState">true</item>
+        <item name="android:src">@drawable/ic_chevron</item>
+        <item name="android:tint">@color/settings_value_text</item>
+    </style>
+
+    <style name="SettingsHint">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:paddingStart">18dp</item>
+        <item name="android:paddingEnd">18dp</item>
+        <item name="android:textColor">#80FFFFFF</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:lineSpacingExtra">3dp</item>
+    </style>
+
+    <!-- The trough of a segmented control. -->
+    <style name="SettingsSegmentGroup">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@drawable/settings_segment_track</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
+    <!-- Dialogs: the control panel's glass sheet, white pill buttons and no platform teal. The framework's
+         alert style drew a flat grey rectangle with square corners, which stood out against every other surface
+         this launcher draws. -->
+    <style name="Theme.TvHome.Dialog" parent="@android:style/Theme.Material.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/dialog_panel</item>
+        <item name="android:backgroundDimAmount">0.55</item>
+        <item name="android:textColorPrimary">#FFFFFFFF</item>
+        <item name="android:textColorSecondary">#B3FFFFFF</item>
+        <item name="android:colorAccent">#FFFFFFFF</item>
+        <item name="android:colorControlHighlight">#33FFFFFF</item>
+        <item name="android:buttonBarButtonStyle">@style/Widget.TvHome.DialogButton</item>
+        <item name="android:buttonBarStyle">@style/Widget.TvHome.ButtonBar</item>
+    </style>
+
+    <!-- The platform bar sat flush against the panel's rounded edge, so the focused button pill hung off it. -->
+    <style name="Widget.TvHome.ButtonBar" parent="@android:style/Widget.Material.ButtonBar">
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="Widget.TvHome.DialogButton" parent="@android:style/Widget.Material.Button.Borderless">
+        <item name="android:background">@drawable/dialog_button_bg</item>
+        <item name="android:textColor">@color/dialog_button_text</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@string/font_medium</item>
+        <item name="android:minWidth">84dp</item>
+        <item name="android:minHeight">38dp</item>
+        <item name="android:paddingStart">22dp</item>
+        <item name="android:paddingEnd">22dp</item>
+        <item name="android:letterSpacing">0.02</item>
+    </style>
+
+    <!-- One choice in it: 40dp tall, so four of them still fit a 56dp row. -->
+    <style name="SettingsColumnChoice">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:minWidth">56dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/settings_segment_bg</item>
+        <item name="android:textColor">@color/settings_segment_text</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+    <!-- A tighter segment for rows with many choices: the wallpaper row is one chip per picture, and a theme
+         can bring a handful. Same height and text size as the others, just less side padding, so the row still
+         matches the page. -->
+    <style name="SettingsChip" parent="SettingsColumnChoice">
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+    </style>
+</resources>

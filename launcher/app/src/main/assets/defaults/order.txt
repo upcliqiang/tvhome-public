@@ -1,0 +1,17 @@
+tvhome-order 1
+dock com.xiaodianshi.tv.yst,com.trim.tv,com.limelight.noir,com.limelight.unofficialA,com.xiaomi.smarthome.tv
+com.xiaodianshi.tv.yst/.ui.main.MainActivity
+com.trim.tv/.modules.splash.SplashActivity
+com.limelight.noir/com.limelight.PcView
+com.limelight.unofficialA/com.limelight.PcView
+com.xiaomi.smarthome.tv/.ui.MainActivity
+com.xiaomi.tweather/.TWeatherActivity
+com.mitv.alarmcenter/.ui.AlarmCenterActivity
+com.xiaomi.voicecontrol/.settings.SettingsLaunchActivity
+com.huawei.himovceie/com.github.tvbox.osc.ui.activity.HomeActivity
+com.xiaomi.mitv.smartshare/.MainActivity
+com.xiaomi.mitv.calendar/.CalendarActivity
+com.xiaomi.mitv.handbook/.book2.MainActivity
+com.xiaomi.mitv.tvmanager/.MainTvManagerActivity
+com.mitv.gallery/.activity.HomePageActivity
+com.xiaomi.mitv.mediaexplorer/.NewScraperMainEntryActivity

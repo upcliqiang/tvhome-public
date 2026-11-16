@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dialog button text: near-black on the focused white pill, a dimmed white at rest (so 取消 reads as the
+     quieter of the two). -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true" android:color="#FF111111" />
+    <item android:color="#CCFFFFFF" />
+</selector>

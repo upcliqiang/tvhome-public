@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The control panel's card: Aerial's menu is a dark grey glass sheet with a soft edge, not the near-black
+     of glass_panel, so it reads as a floating surface over a bright wallpaper. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:angle="270"
+        android:startColor="#F2434346"
+        android:endColor="#F22C2C2F" />
+    <corners android:radius="22dp" />
+    <stroke
+        android:width="1dp"
+        android:color="#26FFFFFF" />
+</shape>
