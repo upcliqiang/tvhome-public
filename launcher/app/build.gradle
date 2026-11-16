@@ -17,14 +17,30 @@ android {
         versionName '3.3'
     }
 
+    // 仓库里带了一份固定的签名文件，让本机与 CI 编出来的 APK 签名一致（可以互相覆盖安装）。
+    // 它是 Android 的公共 debug 凭据（alias androiddebugkey，口令 android），只适合侧载自用，
+    // 不要拿它去签要上架分发的应用。
+    def fixedKeystore = rootProject.file('keystore/debug.keystore')
+    signingConfigs {
+        release {
+            if (fixedKeystore.exists()) {
+                storeFile fixedKeystore
+                storePassword 'android'
+                keyAlias 'androiddebugkey'
+                keyPassword 'android'
+            }
+        }
+    }
+
     buildTypes {
         release {
             // R8 strips and optimises the code (AndroidX included): smaller APK, faster start on a slow TV CPU.
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            // Sideloaded over ADB, never published: sign with the debug key so it installs over a debug build.
-            signingConfig signingConfigs.debug
+            // 侧载用，签名只求稳定：优先用仓库里那份固定 keystore，缺文件时退回本机 debug 签名
+            // （CI 上每次都会新建一份 ~/.android/debug.keystore，彼此不兼容）。
+            signingConfig fixedKeystore.exists() ? signingConfigs.release : signingConfigs.debug
         }
     }
 

@@ -80,7 +80,11 @@ adb shell cmd package set-home-activity --user 0 com.gathin.tvhome/.MainActivity
 
 仓库自带 `.github/workflows/build.yml`：推送到 `main`、提 PR、打 `v*` 标签或手动触发时，会在 GitHub 的机器上编译一次 release APK，产物在 Actions 页面对应运行的 **Artifacts → app-release-apk** 里下载；打标签时还会自动附到 Release。
 
-> 注意签名：`release` 构建用的是 **debug 签名**（见 `app/build.gradle` 的 `signingConfig signingConfigs.debug`），而 CI 每次运行都会生成一个全新的 debug keystore。因此 **CI 编出来的 APK 和本机编的签名不同**，直接 `adb install -r` 覆盖会报 `INSTALL_FAILED_UPDATE_INCOMPATIBLE`。要覆盖就先 `adb uninstall com.gathin.tvhome`，或者自己固定一个 keystore 通过 secrets 注入。
+### 签名（固定，可直接覆盖安装）
+
+`release` 用的是仓库里自带的一份固定 keystore：`launcher/keystore/debug.keystore`（alias `androiddebugkey`，口令 `android`）。本机和 CI 都用它，所以两边编出来的 APK **签名相同**，可以互相 `adb install -r` 覆盖，不会出现 `INSTALL_FAILED_UPDATE_INCOMPATIBLE`。
+
+这是一份 Android 的**公共 debug 凭据**——它不提供任何"防伪"能力，只用来保证签名稳定。想签正式分发的应用请自己生成 keystore，通过 secrets 注入，别用这份。删掉该文件时构建会退回本机的 `~/.android/debug.keystore`，那时 CI 每次跑都是新密钥，产物之间又不兼容了。
 
 ## 四、目录
 
@@ -88,6 +92,7 @@ adb shell cmd package set-home-activity --user 0 com.gathin.tvhome/.MainActivity
 launcher/            Android 应用（Gradle 工程）
   app/src/main/java/com/gathin/tvhome/   桌面源码
   app/src/main/assets/defaults/          内置主题（配置 / 顺序 / 壁纸）
+  keystore/debug.keystore                固定签名（公共 debug 凭据，见上一节）
   init-aliyun.gradle                     国内镜像构建脚本
 themes/aerial/       随包主题：config.json + 壁纸 + 5 张轮换图
 docs/screenshot.png  截图
