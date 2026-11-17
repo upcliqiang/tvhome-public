@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Fade only: no scale, no translate. A scale here made a tile pass through a smaller size while the
+     entrance ran, so a screenshot or a key press landing mid-animation showed tiles at different sizes
+     (a 281 px tile measured 334 px during the zoom). The tile now has its final size and position from
+     the first frame; only its alpha animates, so tiles can never look mismatched. -->
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:interpolator="@android:interpolator/decelerate_cubic"
     android:duration="420">
     <alpha android:fromAlpha="0.0" android:toAlpha="1.0" />
-    <translate android:fromYDelta="22%" android:toYDelta="0%" />
-    <scale
-        android:fromXScale="0.94" android:toXScale="1.0"
-        android:fromYScale="0.94" android:toYScale="1.0"
-        android:pivotX="50%" android:pivotY="50%" />
 </set>
