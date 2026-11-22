@@ -255,29 +255,9 @@ final class ScreensaverScene {
         }, "clock-wallpaper").start();
     }
 
-    /** WallpaperPlayer's decode: sampled and scaled down to cover the screen, never bigger than 4K. */
+    /** The same decode as the rotation player: sampled and scaled down to cover the screen, never bigger than 4K. */
     private static Bitmap decode(File file, int screenW, int screenH) {
-        try {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(file.getPath(), options);
-            int width = options.outWidth, height = options.outHeight;
-            if (width <= 0 || height <= 0) return null;
-            int sample = WallpaperSize.sampleSize(width, height, screenW, screenH);
-            if (!WallpaperSize.accepted(width / sample, height / sample)) return null;
-            options.inJustDecodeBounds = false;
-            options.inSampleSize = sample;
-            int[] scale = WallpaperSize.coverScale(width / sample, height / sample, screenW, screenH);
-            if (scale != null) {
-                options.inScaled = true;
-                options.inDensity = scale[0];
-                options.inTargetDensity = scale[1];
-            }
-            options.inPreferredConfig = Bitmap.Config.RGB_565;
-            return BitmapFactory.decodeFile(file.getPath(), options);
-        } catch (Exception | OutOfMemoryError failure) {
-            return null;
-        }
+        return WallpaperDecode.decode(file, screenW, screenH, Bitmap.Config.RGB_565, false);
     }
 
     /** Step to the next picture once its turn is up; the tick already runs every minute. */

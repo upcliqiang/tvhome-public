@@ -5,12 +5,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -28,9 +25,8 @@ import java.util.Comparator;
  * hit skips the icon even for those. Only a bounded number of entries is kept (a rotated set of tiles, or a
  * theme's different tile size, would otherwise pile up) and the oldest go first.
  */
-final class TileArtCache {
+final class TileArtCache extends DiskBitmapCache {
     private static final int MAGIC = 0x54564152;   // "TVAR"
-    private static final int VERSION = 1;
     /** Room for two sets of tiles: the current one, plus what a change of tile size or theme left behind. */
     private static final int MAX_FILES = 32;
 
@@ -54,10 +50,8 @@ final class TileArtCache {
         }
     }
 
-    private final File folder;
-
     TileArtCache(File folder) {
-        this.folder = folder;
+        super(folder);
     }
 
     private File file(String key) {
@@ -77,10 +71,7 @@ final class TileArtCache {
         Bitmap fill = null, wide = null;
         try (DataInputStream in = new DataInputStream(
                 new BufferedInputStream(new FileInputStream(cache), 1 << 16))) {
-            if (in.readInt() != MAGIC || in.readInt() != VERSION) {
-                cache.delete();
-                return null;
-            }
+            if (!headerMatches(in, cache, MAGIC)) return null;
             int ambient = in.readInt();
             boolean plain = in.readInt() != 0;
             int fillW = in.readInt(), fillH = in.readInt();
@@ -108,44 +99,20 @@ final class TileArtCache {
         return bitmap;
     }
 
-    /** The bitmap's pixels, to hand to {@link #save} on another thread: copying them here keeps the write's
-     *  cost off the UI thread while the bitmap is still ours to read. */
-    static ByteBuffer snapshot(Bitmap bitmap) {
-        ByteBuffer pixels = ByteBuffer.allocate(bitmap.getRowBytes() * bitmap.getHeight());
-        bitmap.copyPixelsToBuffer(pixels);
-        pixels.rewind();
-        return pixels;
-    }
-
     /** Writes this tile's artwork, replacing any earlier entry. Runs off the UI thread. */
     void save(String key, int ambient, boolean plain, ByteBuffer fill, int fillW, int fillH,
               ByteBuffer wide, int wideW, int wideH) {
         File cache = file(key);
-        File temp = new File(folder, cache.getName() + ".tmp");
-        try {
-            if (!folder.isDirectory() && !folder.mkdirs()) return;
-            try (DataOutputStream out = new DataOutputStream(
-                    new BufferedOutputStream(new FileOutputStream(temp), 1 << 16))) {
-                out.writeInt(MAGIC);
-                out.writeInt(VERSION);
-                out.writeInt(ambient);
-                out.writeInt(plain ? 1 : 0);
-                out.writeInt(fillW);
-                out.writeInt(fillH);
-                out.writeInt(wide == null ? 0 : wideW);
-                out.writeInt(wide == null ? 0 : wideH);
-                out.write(fill.array(), 0, fill.limit());
-                if (wide != null) out.write(wide.array(), 0, wide.limit());
-            }
-            // Rename over the old entry: a half-written file is never read back as artwork.
-            if (!temp.renameTo(cache)) {
-                cache.delete();
-                temp.renameTo(cache);
-            }
-        } catch (Exception failure) {
-            temp.delete();
-            return;
-        }
+        writeEntry(cache, MAGIC, out -> {
+            out.writeInt(ambient);
+            out.writeInt(plain ? 1 : 0);
+            out.writeInt(fillW);
+            out.writeInt(fillH);
+            out.writeInt(wide == null ? 0 : wideW);
+            out.writeInt(wide == null ? 0 : wideH);
+            out.write(fill.array(), 0, fill.limit());
+            if (wide != null) out.write(wide.array(), 0, wide.limit());
+        });
         trim();
     }
 

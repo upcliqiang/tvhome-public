@@ -350,24 +350,7 @@ final class WallpaperPlayer {
         Bitmap cached = cache.load(file, width, height, trueColor, dimColor);
         if (cached != null) return cached;
         try {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(file.getPath(), options);
-            int width = options.outWidth, height = options.outHeight;
-            if (width <= 0 || height <= 0) return null;
-            int sample = WallpaperSize.sampleSize(width, height, this.width, this.height);
-            if (!WallpaperSize.accepted(width / sample, height / sample)) return null;
-            options.inJustDecodeBounds = false;
-            options.inSampleSize = sample;
-            int[] scale = WallpaperSize.coverScale(width / sample, height / sample, this.width, this.height);
-            if (scale != null) {
-                options.inScaled = true;
-                options.inDensity = scale[0];
-                options.inTargetDensity = scale[1];
-            }
-            options.inPreferredConfig = bitmapConfig;
-            options.inMutable = dimColor != 0;
-            Bitmap decoded = BitmapFactory.decodeFile(file.getPath(), options);
+            Bitmap decoded = WallpaperDecode.decode(file, width, height, bitmapConfig, dimColor != 0);
             if (decoded == null) return null;
             if (dimColor != 0) new Canvas(decoded).drawColor(dimColor);
             // Keep the pixels for the next start: it reads them back instead of decoding this JPEG again.
@@ -378,7 +361,7 @@ final class WallpaperPlayer {
                 decoder.execute(() -> {
                     try {
                         if (decoded.isRecycled()) return;   // let go by the caller before this copy started
-                        ByteBuffer pixels = WallpaperCache.snapshot(decoded);
+                        ByteBuffer pixels = DiskBitmapCache.snapshot(decoded);
                         cache.save(file, this.width, this.height, trueColor, dimColor,
                                 pixels, decodedWidth, decodedHeight);
                     } catch (Exception | OutOfMemoryError ignored) {

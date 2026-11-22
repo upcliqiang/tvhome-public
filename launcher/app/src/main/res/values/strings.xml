@@ -11,7 +11,6 @@
     <string name="settings">Settings</string>
     <string name="choose_input">Inputs</string>
     <string name="connected">Connected</string>
-    <string name="standby">Standby</string>
     <string name="not_connected">No device</string>
     <string name="live_tv">Live TV</string>
     <string name="no_inputs">No inputs found</string>
@@ -70,22 +69,15 @@
     <string name="rows_below_dock_label">Rows below dock</string>
     <string name="dock_opacity_label">Dock band opacity</string>
     <string name="wallpaper_label">Wallpaper style</string>
-    <string name="wallpaper_state">Wallpaper: %1$s</string>
     <string name="wallpaper_none">None</string>
-    <string name="wallpaper_applied">Wallpaper changed</string>
-    <string name="wallpaper_theme_default">Theme default</string>
     <string name="wallpaper_default_chip">Default</string>
     <string name="wallpaper_rotation_label">Wallpaper rotation</string>
-    <string name="wallpaper_rotating">Rotating</string>
     <string name="rotation_15">15 min</string>
     <string name="rotation_60">1 hour</string>
     <string name="rotation_240">4 hours</string>
     <string name="animations">Animations</string>
-    <string name="animations_state">Animations: %1$s</string>
     <string name="advanced_effects">Advanced effects</string>
-    <string name="advanced_effects_state">Advanced effects: %1$s</string>
     <string name="open_on_start_label">Open on start</string>
-    <string name="open_on_start_state">Open on start: %1$s</string>
     <string name="advanced_effects_warning">Adds a lifted tile, icon zoom and smooth colour transitions. May increase memory use; the actual difference depends on your TV.</string>
     <string name="follow_theme">Follow theme (reset on-TV choices)</string>
     <string name="follow_theme_hint">Uses the current theme or built-in layout and motion settings. Pushing or resetting a theme also clears your on-TV choices.</string>
@@ -189,7 +181,6 @@
     <string name="upload_label">Add wallpapers from a phone</string>
     <string name="upload_off">Not running</string>
     <string name="upload_dialog_title">Add wallpapers from a phone or computer</string>
-    <string name="upload_dialog_message">Join the same WiFi as the TV, then open this address in a browser:\n\n%1$s\n\nPictures you send show up in the wallpaper row below; the full-screen picture style can use them as a screensaver too.</string>
     <string name="upload_qr_hint">Scan this with your phone\'s camera or WeChat to open the page:</string>
     <string name="upload_qr_footnote">The phone has to be on the same WiFi as the TV. Pictures you send show up in the wallpaper row below; the full-screen picture style can use them as a screensaver too.</string>
 </resources>

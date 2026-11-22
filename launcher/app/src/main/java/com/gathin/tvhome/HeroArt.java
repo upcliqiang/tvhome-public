@@ -23,7 +23,7 @@ final class HeroArt {
     static Bitmap from(Drawable live) {
         if (live == null) return null;
         // Draw a private copy: changing the bounds of the drawable a tile shows would blank the tile.
-        Drawable d = live.getConstantState() != null ? live.getConstantState().newDrawable().mutate() : live;
+        Drawable d = AppAdapter.privateCopy(live);
         Rect saved = new Rect(d.getBounds());
         Bitmap big = Bitmap.createBitmap(W * 4, H * 4, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(big);

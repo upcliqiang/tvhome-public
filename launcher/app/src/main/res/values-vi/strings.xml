@@ -6,7 +6,6 @@
     <string name="settings">Cài đặt</string>
     <string name="choose_input">Nguồn vào</string>
     <string name="connected">Đã kết nối</string>
-    <string name="standby">Chờ</string>
     <string name="not_connected">Không có thiết bị</string>
     <string name="live_tv">Truyền hình</string>
     <string name="no_inputs">Không tìm thấy nguồn vào</string>
@@ -31,11 +30,8 @@
     <string name="native_settings">Cài đặt nhà sản xuất</string>
     <string name="columns_label">Số ứng dụng mỗi hàng</string>
     <string name="dock_opacity_label">Độ đậm của thanh dock</string>
-    <string name="animations_state">Hiệu ứng: %1$s</string>
     <string name="advanced_effects">Hiệu ứng nâng cao</string>
-    <string name="advanced_effects_state">Hiệu ứng nâng cao: %1$s</string>
     <string name="open_on_start_label">Mở khi khởi động</string>
-    <string name="open_on_start_state">Mở khi khởi động: %1$s</string>
     <string name="advanced_effects_warning">Thêm hiệu ứng ô nổi lên, phóng to biểu tượng và chuyển màu mượt. Có thể tốn thêm bộ nhớ; mức chênh lệch tùy từng TV.</string>
     <string name="follow_theme">Theo theme (xóa lựa chọn trên TV)</string>
     <string name="follow_theme_hint">Dùng bố cục và hiệu ứng của theme hiện tại hoặc mặc định. Đẩy hoặc đặt lại theme cũng xóa các lựa chọn bạn đã chọn trên TV.</string>
@@ -84,10 +80,7 @@
     <string name="stats_storage">Còn trống %1$s</string>
     <string name="rows_below_dock_label">Số hàng dưới dock</string>
     <string name="wallpaper_label">Hình nền</string>
-    <string name="wallpaper_state">Hình nền: %1$s</string>
     <string name="wallpaper_none">Không có</string>
-    <string name="wallpaper_applied">Đã đổi hình nền</string>
-    <string name="wallpaper_theme_default">Theo theme</string>
     <string name="reorder">Sắp xếp ứng dụng</string>
     <string name="reorder_hint">Bấm OK để nhấc ứng dụng, phím mũi tên để di chuyển, Back để đặt xuống. Bấm Back lần nữa để xong.</string>
     <string name="reorder_not_saved">Không lưu được thứ tự mới</string>

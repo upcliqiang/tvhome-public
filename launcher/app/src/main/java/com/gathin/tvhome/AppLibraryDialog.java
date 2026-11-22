@@ -133,7 +133,7 @@ final class AppLibraryDialog {
         GradientDrawable bg = new GradientDrawable();
         bg.setColor(color);
         bg.setCornerRadius(dp(radius));
-        bg.setStroke(dp(1), 0x18FFFFFF);
+        bg.setStroke(dp(1), 0x2EFFFFFF);   // dialog_panel's hairline
         return bg;
     }
 
@@ -362,7 +362,7 @@ final class AppLibraryDialog {
         title.setSingleLine(true);
         title.setEllipsize(TextUtils.TruncateAt.END);
         TextView count = text(activity.getResources().getQuantityString(
-                R.plurals.library_app_count, totalApps, totalApps), 13, 0xA6FFFFFF);
+                R.plurals.library_app_count, totalApps, totalApps), 13, 0xB3FFFFFF);   // the secondary-text alpha
         count.setSingleLine(true);
         header.addView(count, new LinearLayout.LayoutParams(-2, -2));
         // The launcher has no global supportsRtl: explicitly mirror this horizontal row.
@@ -372,7 +372,7 @@ final class AppLibraryDialog {
             count.setPadding(0, 0, dp(12), 0);
         }
         panel.addView(header, new LinearLayout.LayoutParams(-1, dp(44)));
-        instructions = text(hint(false), 13, 0xBBFFFFFF);
+        instructions = text(hint(false), 13, 0x99FFFFFF);   // the hint-text alpha (settings_value_text)
         instructions.setSingleLine(true);
         instructions.setEllipsize(TextUtils.TruncateAt.END);
         instructions.setPadding(dp(12), 0, dp(12), dp(6));
@@ -525,12 +525,8 @@ final class AppLibraryDialog {
         if (spring != null) spring.cancel();
         View menuPanel = activity.getLayoutInflater().inflate(R.layout.popup_inputs, panel, false);
         LinearLayout rows = menuPanel.findViewById(R.id.rows);
-        PopupWindow menu = new PopupWindow(menuPanel, dp(220), ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        PopupWindow menu = GlassMenu.popup(menuPanel, dp(220));
         actionPopup = menu;
-        menu.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        menu.setOutsideTouchable(true);
-        menu.setAnimationStyle(0);
-        menu.setElevation(0f);
         menu.setOnDismissListener(() -> {
             if (actionPopup == menu) actionPopup = null;
             restoreCardFocus();
@@ -565,25 +561,15 @@ final class AppLibraryDialog {
                 panelLocation[0] + panel.getWidth(), panelLocation[1] + panel.getHeight());
         int x = Math.max(screen.left + dp(12), Math.min(location[0] + anchor.getWidth() - dp(12), screen.right - menuWidth - dp(12)));
         int y = Math.max(screen.top + dp(12), Math.min(location[1] + dp(8), screen.bottom - menuPanel.getMeasuredHeight() - dp(12)));
-        menuPanel.setAlpha(0f);
-        menuPanel.setPivotY(0f);
-        menuPanel.setScaleY(0.92f);
-        menuPanel.setTranslationY(-dp(8));
+        GlassMenu.prepareReveal(menuPanel, true, dp(8));
         menu.showAtLocation(activity.getWindow().getDecorView(), Gravity.TOP | Gravity.START, x, y);
-        menuPanel.animate().alpha(1f).scaleY(1f).translationY(0f).setDuration(reducedMotion ? Motion.REDUCED_MS : 220)
-                .setInterpolator(new android.view.animation.DecelerateInterpolator(1.6f)).start();
+        GlassMenu.animateIn(menuPanel, reducedMotion ? Motion.REDUCED_MS : 220);
         rows.getChildAt(0).requestFocus();
     }
 
     private void addAction(LinearLayout rows, int label, Runnable action) {
-        View row = activity.getLayoutInflater().inflate(R.layout.item_input, rows, false);
-        ((TextView) row.findViewById(R.id.title)).setText(label);
+        View row = GlassMenu.menuRow(activity, rows, label, 0, null, v -> action.run());
         row.setFocusableInTouchMode(true);
-        row.findViewById(R.id.icon).setVisibility(View.GONE);
-        row.findViewById(R.id.dot).setVisibility(View.GONE);
-        row.findViewById(R.id.status).setVisibility(View.GONE);
-        row.setOnClickListener(v -> action.run());
-        rows.addView(row);
         row.setOnKeyListener((v, key, event) -> {
             int index = rows.indexOfChild(v);
             return event.getAction() == KeyEvent.ACTION_DOWN && (key == KeyEvent.KEYCODE_DPAD_LEFT
@@ -655,12 +641,12 @@ final class AppLibraryDialog {
             boolean recent = !selectionMode && LibraryApps.recent(installTimes.getOrDefault(pkg, 0L), catalogTime);
             status.setText(home ? R.string.library_on_home : recent ? R.string.library_recent : R.string.library_add_home);
             status.setVisibility(home || !okOpens ? View.VISIBLE : View.INVISIBLE);
-            holder.itemView.setBackground(surface(home ? 0x1475BBA4 : 0x0CFFFFFF, 18));
+            holder.itemView.setBackground(surface(home ? 0x146EC1FF : 0x0CFFFFFF, 18));   // selected row: the accent blue (REORDER_ACCENT) at low alpha
             View check = holder.itemView.findViewById(R.id.dot);
             check.getLayoutParams().width = dp(home ? 18 : 8);
             check.getLayoutParams().height = dp(home ? 18 : 8);
             if (home) check.setBackgroundResource(R.drawable.library_check);
-            else check.setBackground(surface(0xFF70D9A0, 8));
+            else check.setBackground(surface(0xFF34C759, 8));   // the status green (status_dot)
             check.setVisibility(home || recent ? View.VISIBLE : View.GONE);
             holder.itemView.setOnClickListener(v -> {
                 boolean onHomeNow = onHome.test(pkg);

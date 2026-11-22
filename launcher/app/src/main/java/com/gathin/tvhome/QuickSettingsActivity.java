@@ -68,14 +68,7 @@ public final class QuickSettingsActivity extends Activity {
     }
 
     private void addRow(LinearLayout rows, int icon, int title, int status, Intent target) {
-        View row = getLayoutInflater().inflate(R.layout.item_input, rows, false);
-        ((ImageView) row.findViewById(R.id.icon)).setImageResource(icon);
-        ((TextView) row.findViewById(R.id.title)).setText(title);
-        row.findViewById(R.id.dot).setVisibility(View.GONE);
-        TextView hint = row.findViewById(R.id.status);
-        if (status != 0) hint.setText(status);
-        else hint.setVisibility(View.GONE);
-        row.setOnClickListener(v -> {
+        GlassMenu.menuRow(this, rows, title, icon, status != 0 ? getString(status) : null, v -> {
             try {
                 startActivity(target.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             } catch (ActivityNotFoundException | SecurityException e) {
@@ -83,6 +76,5 @@ public final class QuickSettingsActivity extends Activity {
             }
             finish();
         });
-        rows.addView(row);
     }
 }

@@ -175,7 +175,7 @@
         <View
             android:layout_width="7dp"
             android:layout_height="7dp"
-            android:background="@drawable/dot_online" />
+            android:background="@drawable/status_dot" />
 
         <TextView
             android:layout_width="0dp"

@@ -229,16 +229,7 @@ final class UploadServer {
      * the way Home numbers a wallpaper collection ({@code 07-beach.jpg}). Returns null when it is not an image.
      */
     private File store(File temp, File dir, String wanted) {
-        BitmapFactory.Options bounds = new BitmapFactory.Options();
-        bounds.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(temp.getPath(), bounds);
-        if (bounds.outWidth <= 0 || bounds.outHeight <= 0) return null;
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        int sample = 1;
-        while (Math.max(bounds.outWidth, bounds.outHeight) / (sample * 2) >= MAX_EDGE) sample *= 2;
-        options.inSampleSize = sample;
-        Bitmap bitmap = BitmapFactory.decodeFile(temp.getPath(), options);
+        Bitmap bitmap = decodeSampled(temp.getPath(), MAX_EDGE);
         if (bitmap == null) return null;
 
         int degrees = orientationDegrees(temp);
@@ -279,21 +270,29 @@ final class UploadServer {
         return target;
     }
 
+    /**
+     * Bounds-decode first, then halve the sample size until the long edge fits maxEdge, then decode for real.
+     * The one decode pipeline both the stored wallpaper and the page's thumbnails go through.
+     */
+    private static Bitmap decodeSampled(String path, int maxEdge) {
+        BitmapFactory.Options bounds = new BitmapFactory.Options();
+        bounds.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, bounds);
+        if (bounds.outWidth <= 0 || bounds.outHeight <= 0) return null;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        int sample = 1;
+        while (Math.max(bounds.outWidth, bounds.outHeight) / (sample * 2) >= maxEdge) sample *= 2;
+        options.inSampleSize = sample;
+        return BitmapFactory.decodeFile(path, options);
+    }
+
     /** A small JPEG for the page's grid; decoding the full picture for every tile would crawl on a phone too. */
     private byte[] thumbnail(String name) {
         File dir = wallpaperDir();
         if (dir == null || name == null) return null;
         File file = new File(dir, name);
         if (!file.isFile() || !dir.equals(file.getParentFile())) return null;
-        BitmapFactory.Options bounds = new BitmapFactory.Options();
-        bounds.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(file.getPath(), bounds);
-        if (bounds.outWidth <= 0) return null;
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        int sample = 1;
-        while (bounds.outWidth / (sample * 2) >= 360) sample *= 2;
-        options.inSampleSize = sample;
-        Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(), options);
+        Bitmap bitmap = decodeSampled(file.getPath(), 360);
         if (bitmap == null) return null;
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 78, bytes);

@@ -6,7 +6,6 @@
     <string name="settings">Setelan</string>
     <string name="choose_input">Input</string>
     <string name="connected">Terhubung</string>
-    <string name="standby">Siaga</string>
     <string name="not_connected">Tidak ada perangkat</string>
     <string name="live_tv">TV Langsung</string>
     <string name="no_inputs">Tidak ada input ditemukan</string>
@@ -33,15 +32,9 @@
     <string name="dock_opacity_label">Opasitas pita dock</string>
     <string name="rows_below_dock_label">Baris di bawah dock</string>
     <string name="wallpaper_label">Wallpaper</string>
-    <string name="wallpaper_state">Wallpaper: %1$s</string>
     <string name="wallpaper_none">Tidak ada</string>
-    <string name="wallpaper_applied">Wallpaper diubah</string>
-    <string name="wallpaper_theme_default">Bawaan tema</string>
-    <string name="animations_state">Animasi: %1$s</string>
     <string name="advanced_effects">Efek Lanjut</string>
-    <string name="advanced_effects_state">Efek lanjut: %1$s</string>
     <string name="open_on_start_label">Buka saat mulai</string>
-    <string name="open_on_start_state">Buka saat mulai: %1$s</string>
     <string name="advanced_effects_warning">Menambah tile terangkat, zoom ikon, dan transisi warna yang halus. Dapat menambah penggunaan memori; perbedaan aktual tergantung TV Anda.</string>
     <string name="follow_theme">Ikuti tema (atur ulang pilihan di TV)</string>
     <string name="follow_theme_hint">Menggunakan tema saat ini atau pengaturan tata letak dan gerakan bawaan. Memasang atau mengatur ulang tema juga menghapus pilihan di TV Anda.</string>

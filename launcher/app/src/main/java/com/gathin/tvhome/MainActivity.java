@@ -248,7 +248,6 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private Drawable.ConstantState vpnPlainBackground;
     private ColorStateList vpnPlainInk;
     private SpringAnimation springX, springY;
-    private float glassTargetX, glassTargetY;
     // How far the grid has scrolled the glass. springY works without it, in grid content space, so a
     // scroll moves the glass in lockstep with its tile instead of becoming a moving spring target.
     private float glassScrollShift;
@@ -808,12 +807,10 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             @Override
             public void onScrolled(@NonNull RecyclerView rv, int dx, int dy) {
                 if (!glassShown) return;
-                glassTargetY -= dy;
                 glassScrollShift -= dy;
                 glass.setTranslationY(glass.getTranslationY() - dy);
                 // single_row scrolls sideways: the same bookkeeping on the other axis.
                 if (dx != 0) {
-                    glassTargetX -= dx;
                     glassScrollShiftX -= dx;
                     glass.setTranslationX(glass.getTranslationX() - dx);
                 }
@@ -2091,8 +2088,6 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         }
         glassCardW = card.getWidth();
         glassCardRect.set(r);
-        glassTargetX = x;
-        glassTargetY = y;
         // Cinematic shelf: the highlight glows in the dock app's colour, plain white in the grid (and on the dock with
         // cinematic_white_focus). app_glow: every tile. In a single row every tile is the dock's kind.
         boolean coloured = (appGlow || cinematic && !cinematicWhiteFocus && (singleRow || position < COLUMNS)) && !festive;
@@ -2273,10 +2268,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
                 setAmbient(color);
                 ambient.setAlpha(1f);
             } else if (ambientGlow && color != ambientColor) {
-                ambient.animate().alpha(0.35f).setDuration(200).withEndAction(() -> {
-                    setAmbient(color);
-                    ambient.animate().alpha(1f).setDuration(500).start();
-                }).start();
+                dipSwapAmbient(color, 200);
             }
         } else {
             hero.setY(y);
@@ -2490,6 +2482,14 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         ambientAnimator.start();
     }
 
+    /** The dip-and-swap: the glow dips to a whisper, takes the new colour, comes back. dipMs 0 swaps in place. */
+    private void dipSwapAmbient(int color, int dipMs) {
+        ambient.animate().alpha(0.35f).setDuration(dipMs).withEndAction(() -> {
+            setAmbient(color);
+            ambient.animate().alpha(1f).setDuration(500).start();
+        }).start();
+    }
+
     private void stopAmbientAnimation() {
         if (ambientAnimator != null) {
             ambientAnimator.cancel();
@@ -2525,11 +2525,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             ambient.setAlpha(1f);
             return;
         }
-        // The same dip-and-swap as the dock's top shelf.
-        ambient.animate().alpha(0.35f).setDuration(ambient.getAlpha() > 0.35f ? 200 : 0).withEndAction(() -> {
-            setAmbient(color);
-            ambient.animate().alpha(1f).setDuration(500).start();
-        }).start();
+        dipSwapAmbient(color, ambient.getAlpha() > 0.35f ? 200 : 0);
     }
 
     private void hideHero() {
@@ -4151,11 +4147,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     }
 
     private PopupWindow glassPopup(View panel, int width) {
-        final PopupWindow popup = new PopupWindow(panel, width, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        popup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));   // needed for Back to dismiss
-        popup.setOutsideTouchable(true);
-        popup.setAnimationStyle(0);
-        popup.setElevation(0f);
+        PopupWindow popup = GlassMenu.popup(panel, width);
         popup.setOnDismissListener(() -> {
             if (openPopup == popup) openPopup = null;
         });
@@ -4165,10 +4157,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
 
     /** Drop in: fade and unfold from the top edge, hanging under the anchor pill. */
     private void dropIn(PopupWindow popup, View panel, View anchor, int gravity) {
-        panel.setAlpha(0f);
-        panel.setPivotY(0f);
-        panel.setScaleY(0.92f);
-        panel.setTranslationY(-8 * density);
+        GlassMenu.prepareReveal(panel, true, (int) (8 * density));
         int xOff = 0;
         int yOff = (int) (10 * density) + captionOffset(anchor);
         if (pillLabelBelow && isCaptionAnchor(anchor)) {
@@ -4189,8 +4178,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         } else {
             popup.showAsDropDown(anchor, xOff, yOff, gravity);
         }
-        panel.animate().alpha(1f).scaleY(1f).translationY(0f).setDuration(reducedMotion ? Motion.REDUCED_MS : 220)
-                .setInterpolator(new android.view.animation.DecelerateInterpolator(1.6f)).start();
+        GlassMenu.animateIn(panel, reducedMotion ? Motion.REDUCED_MS : 220);
     }
 
     /** pill_label_below: whether an anchor is a round pill sitting inside a caption box. */
@@ -4534,24 +4522,15 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (at[1] + card.getHeight() + gap + height <= root.getHeight()) {
             dropIn(popup, panel, card, Gravity.START);
         } else {
-            panel.setAlpha(0f);
-            panel.setPivotY(height);
-            panel.setScaleY(0.92f);
-            panel.setTranslationY(8 * density);
+            GlassMenu.prepareReveal(panel, false, (int) (8 * density));
             popup.showAtLocation(root, Gravity.NO_GRAVITY, at[0], Math.max(0, at[1] - gap - height));
-            panel.animate().alpha(1f).scaleY(1f).translationY(0f).setDuration(220)
-                    .setInterpolator(new android.view.animation.DecelerateInterpolator(1.6f)).start();
+            GlassMenu.animateIn(panel, 220);
         }
         rows.getChildAt(0).requestFocus();
     }
 
     private void addSettingsMenuRow(LinearLayout rows, PopupWindow popup, int title, Runnable action) {
-        View row = getLayoutInflater().inflate(R.layout.item_input, rows, false);
-        row.findViewById(R.id.icon).setVisibility(View.GONE);
-        row.findViewById(R.id.dot).setVisibility(View.GONE);
-        row.findViewById(R.id.status).setVisibility(View.GONE);
-        ((TextView) row.findViewById(R.id.title)).setText(title);
-        row.setOnClickListener(v -> {
+        View row = GlassMenu.menuRow(this, rows, title, 0, null, v -> {
             popup.dismiss();
             action.run();
         });
@@ -4571,7 +4550,6 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             }
             return true;
         });
-        rows.addView(row);
     }
 
     /**

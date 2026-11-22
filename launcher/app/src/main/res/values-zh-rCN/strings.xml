@@ -13,22 +13,15 @@
     <string name="columns_label">每行应用数量</string>
     <string name="rows_below_dock_label">程序坞下方行数</string>
     <string name="wallpaper_label">壁纸样式</string>
-    <string name="wallpaper_state">壁纸：%1$s</string>
     <string name="wallpaper_none">无</string>
-    <string name="wallpaper_applied">壁纸已更改</string>
-    <string name="wallpaper_theme_default">主题默认</string>
     <string name="wallpaper_default_chip">默认</string>
     <string name="wallpaper_rotation_label">壁纸轮换</string>
-    <string name="wallpaper_rotating">自动轮换</string>
     <string name="rotation_15">15 分钟</string>
     <string name="rotation_60">1 小时</string>
     <string name="rotation_240">4 小时</string>
     <string name="animations">动态效果</string>
-    <string name="animations_state">动态效果：%1$s</string>
     <string name="advanced_effects">高级动态效果</string>
-    <string name="advanced_effects_state">高级动态效果：%1$s</string>
     <string name="open_on_start_label">开机时打开</string>
-    <string name="open_on_start_state">开机时打开：%1$s</string>
     <string name="advanced_effects_warning">增加卡片上浮、图标缩放和背景颜色平滑过渡；可能增加内存占用，实际变化取决于电视。</string>
     <string name="follow_theme">跟随主题（重置电视端设置）</string>
     <string name="follow_theme_hint">恢复当前主题或内置的布局与动效设置。推送或重置主题也会清除电视端的这些设置。</string>
@@ -42,7 +35,6 @@
     <string name="enable">开启</string>
     <string name="choose_input">输入源</string>
     <string name="connected">已连接</string>
-    <string name="standby">待机</string>
     <string name="not_connected">未连接</string>
     <string name="live_tv">电视直播</string>
     <string name="no_inputs">未找到输入源</string>
@@ -176,7 +168,6 @@
     <string name="upload_label">手机添加壁纸</string>
     <string name="upload_off">未启动</string>
     <string name="upload_dialog_title">用手机或电脑添加壁纸</string>
-    <string name="upload_dialog_message">手机或电脑连上和电视同一个 WiFi，用浏览器打开：\n\n%1$s\n\n上传的图片会出现在下面的「壁纸样式」里，屏保选「图片」样式时也能用。</string>
     <string name="upload_qr_hint">用手机相机或微信扫一扫，直接打开上传页面：</string>
     <string name="upload_qr_footnote">手机要和电视连同一个 WiFi。上传的图片会出现在下面的「壁纸样式」里，屏保选「图片」样式时也能用。</string>
 </resources>

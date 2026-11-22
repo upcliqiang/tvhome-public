@@ -542,8 +542,8 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             Bitmap wide = e.wide instanceof BitmapDrawable ? ((BitmapDrawable) e.wide).getBitmap() : null;
             int fillW = e.fill.getWidth(), fillH = e.fill.getHeight();
             int wideW = wide == null ? 0 : wide.getWidth(), wideH = wide == null ? 0 : wide.getHeight();
-            ByteBuffer fillPixels = TileArtCache.snapshot(e.fill);
-            ByteBuffer widePixels = wide == null ? null : TileArtCache.snapshot(wide);
+            ByteBuffer fillPixels = DiskBitmapCache.snapshot(e.fill);
+            ByteBuffer widePixels = wide == null ? null : DiskBitmapCache.snapshot(wide);
             int ambient = e.ambient;
             boolean plain = e.plainEdge;
             ART_SAVER.execute(() -> artCache.save(key, ambient, plain, fillPixels, fillW, fillH,
@@ -556,7 +556,7 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == 1) {
-            View row = LayoutInflater.from(ctx).inflate(R.layout.row_app_library, parent, false);
+            View row = LayoutInflater.from(ctx).inflate(R.layout.item_app_library, parent, false);
             View button = row.findViewById(R.id.btnLibrary);
             button.setOnClickListener(v -> listener.onLibraryRequested());
             button.setOnFocusChangeListener((v, focused) -> { if (focused) listener.onLibraryFocused(); });
@@ -889,13 +889,8 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
      */
     private static int dominantColor(Drawable live) {
         if (live == null) return 0xFF6E6E73;
-        Drawable d = live.getConstantState() != null ? live.getConstantState().newDrawable().mutate() : live;
-        Rect saved = new Rect(d.getBounds());
         int n = 24;
-        Bitmap bmp = Bitmap.createBitmap(n, n, Bitmap.Config.ARGB_8888);
-        d.setBounds(0, 0, n, n);
-        d.draw(new Canvas(bmp));
-        d.setBounds(saved);
+        Bitmap bmp = rasterise(live, n, n);
         float[] weight = new float[12];
         float[][] sum = new float[12][3];
         float[] hsv = new float[3];
@@ -1096,11 +1091,27 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     /** Draws a private copy of the drawable into the given box, leaving the tile's own copy untouched. */
     private static void drawAt(Canvas canvas, Drawable icon, int x, int y, int w, int h) {
-        Drawable d = icon.getConstantState() != null ? icon.getConstantState().newDrawable().mutate() : icon;
+        Drawable d = privateCopy(icon);
         Rect saved = new Rect(d.getBounds());
         d.setBounds(x, y, x + w, y + h);
         d.draw(canvas);
         d.setBounds(saved);
+    }
+
+    /** A private copy of the drawable: mutating or rebinding it never touches the tile's own instance. */
+    static Drawable privateCopy(Drawable live) {
+        return live.getConstantState() != null ? live.getConstantState().newDrawable().mutate() : live;
+    }
+
+    /** The drawable rasterised fresh into a w×h ARGB bitmap, the tile's own copy and bounds untouched. */
+    static Bitmap rasterise(Drawable live, int w, int h) {
+        Drawable d = privateCopy(live);
+        Rect saved = new Rect(d.getBounds());
+        Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        d.setBounds(0, 0, w, h);
+        d.draw(new Canvas(bmp));
+        d.setBounds(saved);
+        return bmp;
     }
 
     /**
@@ -1158,13 +1169,8 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
      */
     private static int[][] iconPlate(Drawable live) {
         if (live == null) return null;
-        Drawable d = live.getConstantState() != null ? live.getConstantState().newDrawable().mutate() : live;
-        Rect saved = new Rect(d.getBounds());
         int n = PLATE_N;
-        Bitmap bmp = Bitmap.createBitmap(n, n, Bitmap.Config.ARGB_8888);
-        d.setBounds(0, 0, n, n);
-        d.draw(new Canvas(bmp));
-        d.setBounds(saved);
+        Bitmap bmp = rasterise(live, n, n);
         int[] left = new int[n], right = new int[n];
         int known = 0, first = -1, last = -1;
         for (int y = 0; y < n; y++) {
@@ -1211,13 +1217,8 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
      */
     private static int[] edgeStep(Drawable live) {
         if (live == null) return new int[]{0, 0};
-        Drawable d = live.getConstantState() != null ? live.getConstantState().newDrawable().mutate() : live;
-        Rect saved = new Rect(d.getBounds());
         int n = PLATE_N;
-        Bitmap bmp = Bitmap.createBitmap(n, n, Bitmap.Config.ARGB_8888);
-        d.setBounds(0, 0, n, n);
-        d.draw(new Canvas(bmp));
-        d.setBounds(saved);
+        Bitmap bmp = rasterise(live, n, n);
         int[] left = new int[n], right = new int[n];
         for (int y = 0; y < n; y++) {
             int from = -1, to = -1;
@@ -1308,15 +1309,8 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static int vividColor(Drawable live) {
         if (live == null) return 0xFF444444;
-        // Draw a private copy: changing the bounds of the drawable an ImageView shows would blank the tile.
-        Drawable d = live.getConstantState() != null ? live.getConstantState().newDrawable().mutate() : live;
-        Rect saved = new Rect(d.getBounds());
         int n = 12;
-        Bitmap bmp = Bitmap.createBitmap(n, n, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(bmp);
-        d.setBounds(0, 0, n, n);
-        d.draw(c);
-        d.setBounds(saved);
+        Bitmap bmp = rasterise(live, n, n);
         int[] px = new int[n * n];
         bmp.getPixels(px, 0, n, 0, 0, n, n);
         bmp.recycle();

@@ -251,8 +251,6 @@ final class Config {
      * invalid values keep the historical shuffle so existing themes rotate exactly as before.
      */
     final String wallpaperOrder;
-    /** Whether the overlay file was present and parsed. */
-    final boolean overlayApplied;
     /** Festive skin from a theme (festival, festival_until, greeting, accent_color); {@link Festival#NONE} if none. */
     final Festival festival;
     /** F1 weekends from a theme's race_calendar (see RaceWeekend); empty when the theme has none. */
@@ -350,7 +348,7 @@ final class Config {
                    boolean shamsiDate, String greetingName, boolean moduleCards, boolean reducedMotion, boolean bootToLiveTv, boolean openOnStartChoice, boolean dockTitle, boolean dockRow, int dockPushDp, boolean topMenu, boolean launcherSettingsButton, boolean reorderButton, boolean showNetworkPill, boolean showInputsPill, boolean iconOnlyButtons, boolean iconOnlyInputs, boolean pillLabelBelow, boolean libraryButton, boolean showLibraryPill, int wifiLabelWidth, boolean alwaysShowNames, boolean wallpaperTrueColor, boolean focusOvershoot, String vpnApp,
                    boolean showHomeSettingsShortcut, boolean showStats, String gameDay, boolean appLibrary, boolean appLibrarySelection, boolean libraryOkOpens, boolean uniformTiles, int backgroundColor, int skyIntensity,
                    int[] settingsKeycodes, boolean settingsKeyPanel, boolean restoreKeyServices, boolean wallpaperEnabled, File wallpaper, List<File> wallpapers,
-                   int wallpaperRotationMinutes, int wallpaperDim, int dockOpacity, String wallpaperOrder, boolean overlayApplied,
+                   int wallpaperRotationMinutes, int wallpaperDim, int dockOpacity, String wallpaperOrder,
                    Festival festival, int[] inputKeycodes, List<String> appKeys, String stockHomeRedirect,
                    List<RaceWeekend.Race> raceCalendar, boolean cinematicHome, boolean ambientGlow, boolean appGlow, boolean fadeRows, int homeIdleClockMinutes,
                    boolean keyFilter, boolean dockGlass, String glowStyle, boolean wallpaperCaptions,
@@ -438,7 +436,6 @@ final class Config {
         this.wallpaperDim = wallpaperDim;
         this.dockOpacity = dockOpacity;
         this.wallpaperOrder = wallpaperOrder;
-        this.overlayApplied = overlayApplied;
         this.festival = festival;
         this.raceCalendar = Collections.unmodifiableList(raceCalendar);
         this.cinematicHome = cinematicHome;
@@ -578,9 +575,6 @@ final class Config {
     private static final String BUNDLED_ORDER = BUNDLED_DIR + Order.FILE_NAME;
     /** The shipped rotation collection; its file names are the order Config reads them in. */
     private static final String BUNDLED_WALLPAPERS = BUNDLED_DIR + "wallpapers/";
-    /** Where a theme keeps a rotation collection, relative to the theme folder. */
-    private static final String WALLPAPERS_FOLDER = "wallpapers";
-
     /**
      * Puts the bundled theme back where Home reads it, so the look on screen is the one this build shipped with
      * rather than the bare defaults in config.xml. Only missing files are written: a config.json, wallpaper.jpg or
@@ -595,7 +589,8 @@ final class Config {
         if (dir == null) return;
         restore(ctx, BUNDLED_CONFIG, new File(dir, FILE_NAME));
         restore(ctx, BUNDLED_WALLPAPER, new File(dir, WALLPAPER_NAME));
-        restoreWallpapers(ctx, new File(dir, WALLPAPERS_FOLDER));
+        // ThemeFiles.WALLPAPERS names the same folder the rotation player and the upload server write into.
+        restoreWallpapers(ctx, new File(dir, ThemeFiles.WALLPAPERS));
     }
 
     /**
@@ -749,14 +744,12 @@ final class Config {
         String glassStyle = res.getString(R.string.glass_style);
         boolean singleRow = res.getBoolean(R.bool.single_row);
         boolean dockBandAll = res.getBoolean(R.bool.dock_band_all);
-        boolean applied = false;
 
         File dir = dir(ctx);
         File file = dir != null ? new File(dir, FILE_NAME) : null;
         boolean mounted = Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
         JSONObject json = readOverlay(ctx, file, mounted);
         if (json != null) {
-            applied = true;
             dock = stringList(json, "dock_apps", dock);
             fillDock = bool(json, "fill_dock", fillDock);
             hidden = stringList(json, "hidden_apps", hidden);
@@ -938,7 +931,7 @@ final class Config {
                 iconOnlyButtons, iconOnlyInputs, pillLabelBelow, libraryButton, showLibraryPill, wifiLabelWidth, alwaysShowNames, wallpaperTrueColor, focusOvershoot,
                 vpn, homeSettings, showStats, gameDay, library, librarySelection, libraryOkOpens, uniformTiles, background,
                 Math.max(0, Math.min(100, skyIntensity)), settingsKeycodes, settingsKeyPanel, restoreKeyServices, wallpaperEnabled, wallpaper,
-                wallpapers, rotationMinutes, wallpaperDim, dockOpacity, wallpaperOrder, applied, festival, inputKeycodes, appKeys, stockHomeRedirect,
+                wallpapers, rotationMinutes, wallpaperDim, dockOpacity, wallpaperOrder, festival, inputKeycodes, appKeys, stockHomeRedirect,
                 json == null ? Collections.emptyList() : raceCalendar(json), cinematic, ambientGlow, appGlow, fadeRows,
                 Math.max(0, idleClockMinutes), keyFilter, dockGlass, glowStyle, wallpaperCaptions, handleViewInputs, tileMenu, dockEvenPadding,
                 dockBand, cinematicDots, cinematicWhiteFocus, wifiStatusColor, cinematicScrim, cinematicArt, wallpaperMoods, gamepadPassthrough,

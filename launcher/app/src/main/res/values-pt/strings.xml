@@ -6,7 +6,6 @@
     <string name="settings">Configurações</string>
     <string name="choose_input">Entradas</string>
     <string name="connected">Conectado</string>
-    <string name="standby">Em espera</string>
     <string name="not_connected">Sem dispositivo</string>
     <string name="live_tv">TV ao vivo</string>
     <string name="no_inputs">Nenhuma entrada encontrada</string>
@@ -104,15 +103,9 @@
     <string name="dock_opacity_label">Opacidade da faixa do dock</string>
     <string name="rows_below_dock_label">Fileiras abaixo do dock</string>
     <string name="wallpaper_label">Papel de parede</string>
-    <string name="wallpaper_state">Papel de parede: %1$s</string>
     <string name="wallpaper_none">Nenhum</string>
-    <string name="wallpaper_applied">Papel de parede alterado</string>
-    <string name="wallpaper_theme_default">Padrão do tema</string>
-    <string name="animations_state">Animações: %1$s</string>
     <string name="advanced_effects">Efeitos avançados</string>
-    <string name="advanced_effects_state">Efeitos avançados: %1$s</string>
     <string name="open_on_start_label">Abrir ao iniciar</string>
-    <string name="open_on_start_state">Abrir ao iniciar: %1$s</string>
     <string name="advanced_effects_warning">Adiciona elevação do bloco, zoom no ícone e transições de cor suaves. Pode usar mais memória; a diferença real depende da sua TV.</string>
     <string name="follow_theme">Seguir o tema (desfaz as escolhas feitas na TV)</string>
     <string name="follow_theme_hint">Usa o tema atual ou o layout e o movimento padrão. Enviar ou redefinir um tema também apaga as escolhas feitas na TV.</string>

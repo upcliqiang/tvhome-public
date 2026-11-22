@@ -6,7 +6,6 @@
     <string name="settings">Indstillinger</string>
     <string name="choose_input">Indgange</string>
     <string name="connected">Tilsluttet</string>
-    <string name="standby">Standby</string>
     <string name="not_connected">Ingen enhed</string>
     <string name="live_tv">Live-TV</string>
     <string name="no_inputs">Ingen indgange fundet</string>
@@ -39,13 +38,8 @@
     <string name="rows_below_dock_label">Rækker under docken</string>
     <string name="dock_opacity_label">Docken: gennemsigtighed</string>
     <string name="wallpaper_label">Baggrund</string>
-    <string name="wallpaper_state">Baggrund: %1$s</string>
     <string name="wallpaper_none">Ingen</string>
-    <string name="wallpaper_applied">Baggrund ændret</string>
-    <string name="wallpaper_theme_default">Temaets standard</string>
-    <string name="animations_state">Animationer: %1$s</string>
     <string name="advanced_effects">Avancerede effekter</string>
-    <string name="advanced_effects_state">Avancerede effekter: %1$s</string>
     <string name="follow_theme">Følg tema (nulstil valg på TV)</string>
     <string name="tv_settings">Systemindstillinger</string>
     <string name="quick_picture">Billede</string>

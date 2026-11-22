@@ -6,7 +6,6 @@
     <string name="settings">Asetukset</string>
     <string name="choose_input">Lähteet</string>
     <string name="connected">Yhdistetty</string>
-    <string name="standby">Valmiustila</string>
     <string name="not_connected">Ei laitetta</string>
     <string name="live_tv">TV-kanavat</string>
     <string name="no_inputs">Lähteitä ei löytynyt</string>
@@ -30,11 +29,8 @@
     <string name="native_settings">Valmistajan asetukset</string>
     <string name="columns_label">Sovelluksia rivillä</string>
     <string name="dock_opacity_label">Telakkapalkin peittävyys</string>
-    <string name="animations_state">Animaatiot: %1$s</string>
     <string name="advanced_effects">Lisätehosteet</string>
-    <string name="advanced_effects_state">Lisätehosteet: %1$s</string>
     <string name="open_on_start_label">Avaa käynnistettäessä</string>
-    <string name="open_on_start_state">Avaa käynnistettäessä: %1$s</string>
     <string name="advanced_effects_warning">Lisää ruudun noston, kuvakkeen zoomauksen ja pehmeät värisiirtymät. Voi lisätä muistinkäyttöä; todellinen ero riippuu televisiosta.</string>
     <string name="follow_theme">Noudata teemaa (nollaa televisiossa tehdyt valinnat)</string>
     <string name="follow_theme_hint">Käyttää nykyisen teeman tai sisäänrakennettuja asettelu- ja liikeasetuksia. Teeman lähettäminen tai nollaaminen poistaa myös televisiossa tehdyt valinnat.</string>
@@ -100,10 +96,7 @@
     <string name="dock_edit_pick_place">Valitse telakan paikka tälle sovellukselle ja paina OK. Takaisin peruuttaa.</string>
     <string name="rows_below_dock_label">Rivit telakan alla</string>
     <string name="wallpaper_label">Taustakuva</string>
-    <string name="wallpaper_state">Taustakuva: %1$s</string>
     <string name="wallpaper_none">Ei taustakuvaa</string>
-    <string name="wallpaper_applied">Taustakuva vaihdettu</string>
-    <string name="wallpaper_theme_default">Teeman oletus</string>
     <string name="race_kicker">Osakilpailu %1$d · %2$s · %3$s</string>
     <string name="race_kicker_no_place">Osakilpailu %1$d · %2$s</string>
     <string name="race_next">%1$s alkuun %2$s</string>

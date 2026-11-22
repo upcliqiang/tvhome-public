@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
  */
 final class VpnBadge extends ReplacementSpan {
 
-    static final int GREEN = 0xFF30D158;
+    static final int GREEN = 0xFF34C759;
     static final int INK = 0xFF06290F;
     static final int RED = 0xFFFF453A;
     static final int INK_OFF = 0xFFFFFFFF;
