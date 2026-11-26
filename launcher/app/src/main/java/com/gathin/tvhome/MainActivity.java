@@ -210,6 +210,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     /** Half an hour between readings; five minutes after one that failed. */
     private static final long WEATHER_REFRESH_MS = 30 * 60 * 1000L;
     private static final long WEATHER_RETRY_MS = 5 * 60 * 1000L;
+    /** ADB keep-on: extra attempts after Home comes up, to outlast the TV's own reset pass at boot. */
+    private static final long[] ADB_KEEP_RETRY_MS = {4_000L, 15_000L, 45_000L, 120_000L};
     private final Runnable weatherTick = this::loadWeather;
     /** lunar_date: the lunisolar date under the date line, and the time zone it is computed for. */
     private TextView lunarDate;
@@ -553,6 +555,15 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         // The wallpaper upload page (phone/computer on the same WiFi). A daemon thread that costs nothing while
         // nobody opens it; start() is idempotent, so a recreated Home does not stack a second server.
         UploadServer.get(this).start();
+        // ADB keep-on: the TV turns the developer-options switch off at boot, so with the owner's setting on,
+        // put it back as soon as Home comes up. Retried over the first two minutes: the TV's own security pass
+        // can run later than Home's onCreate.
+        AdbKeepAlive.apply(this);
+        for (long delay : ADB_KEEP_RETRY_MS) {
+            handler.postDelayed(() -> {
+                if (!isFinishing() && !isDestroyed()) AdbKeepAlive.apply(this);
+            }, delay);
+        }
         sky = findViewById(R.id.sky);
         sky.setIntensity(cfg.skyIntensity);
         glass = findViewById(R.id.glass);
@@ -1171,6 +1182,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     protected void onResume() {
         super.onResume();
         resumed = true;
+        // ADB keep-on: a switch the TV resets while Home runs (not only at boot) is put back on the next return.
+        AdbKeepAlive.apply(this);
         // A festival that started or ended while Home was in the background: rebuild with or without it.
         if (festive != festival.active(LocalDate.now())) {
             recreate();
@@ -4303,6 +4316,32 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             open(tvSettingsIntent(cfg.tvSettingsApp));
         });
         panelOk(tvButton);
+
+        // ADB keep-on: one row that switches between "restore the developer-options switch on every start"
+        // and the TV's own behaviour (off after a restart).
+        View adbRow = panel.findViewById(R.id.panelAdb);
+        TextView adbState = panel.findViewById(R.id.panelAdbState);
+        View adbDot = panel.findViewById(R.id.panelAdbDot);
+        Runnable showAdb = () -> {
+            boolean on = AdbKeepAlive.isOn(this);
+            adbState.setText(on ? R.string.adb_state_on : R.string.adb_state_off);
+            adbDot.setVisibility(on ? View.VISIBLE : View.GONE);
+        };
+        showAdb.run();
+        adbRow.setOnClickListener(v -> {
+            boolean next = !AdbKeepAlive.isOn(this);
+            if (next && checkSelfPermission(android.Manifest.permission.WRITE_SECURE_SETTINGS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, R.string.adb_keep_permission, Toast.LENGTH_LONG).show();
+                return;
+            }
+            AdbKeepAlive.setOn(this, next);
+            if (!next) AdbKeepAlive.disableNow(this);   // the TV's own value straight away, as a restart would leave it
+            showAdb.run();
+            Toast.makeText(this, next ? R.string.adb_keep_on_toast : R.string.adb_keep_off_toast,
+                    Toast.LENGTH_SHORT).show();
+        });
+        panelOk(adbRow);
 
         dropIn(popup, panel, findViewById(R.id.btnSettings),
                 getResources().getBoolean(R.bool.rtl_menu_bar) ? Gravity.START : Gravity.END);
