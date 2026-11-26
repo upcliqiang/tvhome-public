@@ -127,11 +127,10 @@
     <string name="app_library">Home settings</string>
     <!-- Control panel: the status line under the three round buttons. -->
     <string name="panel_running">Desktop running</string>
-    <!-- Control panel: the ADB keep-on row. On, the launcher restores the ADB switch on every start; off,
-         ADB follows the TV's own setting again (off after a restart). -->
-    <string name="adb_keep_on">Keep ADB on</string>
-    <string name="adb_state_on">On</string>
-    <string name="adb_state_off">Off</string>
+    <!-- Control panel: the ADB keep-on pill on the date line. On, the launcher restores the ADB switch on
+         every start; off, ADB follows the TV's own setting again (off after a restart). -->
+    <string name="adb_pill_on">ADB On</string>
+    <string name="adb_pill_off">ADB Off</string>
     <string name="adb_keep_on_toast">ADB stays on after a restart</string>
     <string name="adb_keep_off_toast">ADB follows the TV setting again</string>
     <string name="adb_keep_permission">Needs a one-time grant: adb shell pm grant com.gathin.tvhome android.permission.WRITE_SECURE_SETTINGS</string>

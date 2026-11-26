@@ -102,9 +102,8 @@
     <string name="reorder_not_saved">无法保存新顺序</string>
     <string name="app_library">主页设置</string>
     <string name="panel_running">桌面运行中</string>
-    <string name="adb_keep_on">ADB 常开</string>
-    <string name="adb_state_on">开</string>
-    <string name="adb_state_off">关</string>
+    <string name="adb_pill_on">ADB 开</string>
+    <string name="adb_pill_off">ADB 关</string>
     <string name="adb_keep_on_toast">ADB 将保持开启，重启后自动恢复</string>
     <string name="adb_keep_off_toast">已恢复电视默认：ADB 随电视设置</string>
     <string name="adb_keep_permission">需要先授权一次：adb shell pm grant com.gathin.tvhome android.permission.WRITE_SECURE_SETTINGS</string>

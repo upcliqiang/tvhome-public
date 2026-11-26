@@ -4317,14 +4317,14 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         });
         panelOk(tvButton);
 
-        // ADB keep-on: one row that switches between "restore the developer-options switch on every start"
-        // and the TV's own behaviour (off after a restart).
+        // ADB keep-on: the pill on the date line switches between "restore the developer-options switch on
+        // every start" and the TV's own behaviour (off after a restart).
         View adbRow = panel.findViewById(R.id.panelAdb);
         TextView adbState = panel.findViewById(R.id.panelAdbState);
         View adbDot = panel.findViewById(R.id.panelAdbDot);
         Runnable showAdb = () -> {
             boolean on = AdbKeepAlive.isOn(this);
-            adbState.setText(on ? R.string.adb_state_on : R.string.adb_state_off);
+            adbState.setText(on ? R.string.adb_pill_on : R.string.adb_pill_off);
             adbDot.setVisibility(on ? View.VISIBLE : View.GONE);
         };
         showAdb.run();
